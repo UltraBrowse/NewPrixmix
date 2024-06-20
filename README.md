@@ -7,9 +7,10 @@ Backend: ~90% Done (Some more touchups needed)\
 Frontend: 0% Done, nobody has started \
 NewPrixmixManager: 100% Done, nothing here needs work
 
-**Please install [NewPrixmixManager](https://github.com/ka-studios/NewPrixmixManager) before setting up NewPrixmix.**
 
 ## Quickstart
+
+**Please install [NewPrixmixManager](https://github.com/ka-studios/NewPrixmixManager) before setting up NewPrixmix.**
 
 Install Dependencies:
 ```bash
