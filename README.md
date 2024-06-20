@@ -5,7 +5,7 @@ NewPrixmix is made in an effort to stop using Kasm Workspaces and their closed-s
 Total: 50% Done\
 Backend: ~90% Done (Some more touchups needed)\
 Frontend: 0% Done, nobody has started \
-NewPrixmixManager: 100% Done, nothing here needs work\
+NewPrixmixManager: 100% Done, nothing here needs work
 
 **Please install [NewPrixmixManager](https://github.com/ka-studios/NewPrixmixManager) before setting up NewPrixmix.**
 
