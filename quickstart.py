@@ -22,8 +22,8 @@ def print_info(message):
 def print_error(message):
     print(Color.RED + Color.BOLD + "[ERR] " + message + Color.END)
 
-if "/server" in os.environ['PWD']:
-    print_error("Please do not run the file from the server directory.")
+if "ixmix" not in os.path.basename(os.getcwd()):
+    print_error("Please only run the file from its directory.")
     sys.exit(1)
 config = Path("server/config.json")
 if config.is_file():
