@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PrixMix - VNC</title>
+    <link rel="stylesheet" href="./frontend/style.css"> <!-- CSS TBD -->
+    <style>
+       .vnc-container { 
+            max-width: 600px; 
+            margin: auto; 
+            padding: 20px; 
+            background-color: #f9f9f9; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+       .input-group { margin-bottom: 15px; }
+       .submit-button { background-color: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+       .loading-animation { display: none; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="vnc-container">
+    <h2>Please enter a URL or Google Search</h2>
+    <div class="input-group">
+        <input type="text" id="urlInput" placeholder="Enter URL or Google Search">
+    </div>
+    <button class="submit-button" onclick="submitForm()">Submit</button>
+    <div class="loading-animation">Please wait, a container is being provisioned for you...</div>
+</div>
+<script src="./frontend/script.js"></script> 
+</body>
+</html>
