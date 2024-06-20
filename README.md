@@ -2,10 +2,10 @@
 
 NewPrixmix is made in an effort to stop using Kasm Workspaces and their closed-source Web UI and API. [NewPrixmixManager](https://github.com/ka-studios/NewPrixmixManager) creates, destroys, and suspends docker containers asynchronously while streaming them to the end user via [noVNC](https://github.com/noVNC/noVNC)
 ## Progress
-Total: 50% Done
-Backend: ~90% Done (Some more touchups needed)
-Frontend: 0% Done, nobody has started yet
-NewPrixmixManager: 100% Done, nothing here needs work
+Total: 50% Done\
+Backend: ~90% Done (Some more touchups needed)\
+Frontend: 0% Done, nobody has started \
+NewPrixmixManager: 100% Done, nothing here needs work\
 
 **Please install [NewPrixmixManager](https://github.com/ka-studios/NewPrixmixManager) before setting up NewPrixmix.**
 
@@ -19,7 +19,7 @@ Run the Quickstart script:
 ```bash
 python3 quickstart.py
 ```
-NewPrixmix runs on port 8000. You may change that in the main.py.
+NewPrixmix runs on port 8000. You may change that in the main.py.\
 **If using in prod environments, please remember to turn off debug mode (debug=False)!!!!**
 
 ## Skid area
