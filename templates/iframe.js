@@ -32,8 +32,9 @@ function validateInput(input) {
 }
 
 
-function handleResponse(data) {
+async function handleResponse(data) {
     // const novncPort = data.novnc_port; // not needed right now
     // document.querySelector('.loading-animation').style.display = 'none';
-    document.getElementById('input-div').innerHTML = `<iframe src="${data.zrok_url}/vnc_lite.html?password=pxmxpwd0"></iframe>`;
+    await new Promise(r => setTimeout(r, 3000));
+    document.getElementById('input-div').innerHTML = `<iframe src="http://127.0.0.1:8000/port/${data.novnc_port}/vnc.html"></iframe>`;
 }
