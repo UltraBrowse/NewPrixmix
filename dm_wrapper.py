@@ -34,6 +34,7 @@ class Container:
     @property
     def status(self):
         return self._json.get('status')
+
 config = Path("config.json")
 if not config.is_file():
     print(color.RED + color.BOLD + "[ERR] Please create a config.json file with the URL of your NewPrixmixManager instance." + color.END)
@@ -57,38 +58,71 @@ with open("config.json") as c:
     else:
         print(color.RED + color.BOLD + "[ERR] Authorization check failed (check auth in the config.json)" + color.END)
         sys.exit(401)
+
 def create(url):
     payload = {
             "auth":auth,
             "url":url
             }
-    r = requests.post(f"{dm_url}/containers/create", json=payload)
-    return Container(r.json())
+    try:
+        r = requests.post(f"{dm_url}/containers/create", json=payload)
+        r.raise_for_status()  # Raise HTTPError for bad responses
+        return Container(r.json())
+    except requests.exceptions.HTTPError as http_err:
+        print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
+    except requests.exceptions.RequestException as req_err:
+        print(color.RED + color.BOLD + f"[ERR] Request error occurred: {req_err}" + color.END)
+    except ValueError as json_err:
+        print(color.RED + color.BOLD + f"[ERR] JSON decoding error occurred: {json_err}" + color.END)
+    return None  # Return None if there was an error
+
 def destroy(id):
     payload = {
             "auth":auth,
             "id":id
             }
-    r = requests.post(f"{dm_url}/containers/destroy", json=payload)
-    return Container(r.json())
+    try:
+        r = requests.post(f"{dm_url}/containers/destroy", json=payload)
+        r.raise_for_status()  # Raise HTTPError for bad responses
+        return Container(r.json())
+    except requests.exceptions.HTTPError as http_err:
+        print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
+    except requests.exceptions.RequestException as req_err:
+        print(color.RED + color.BOLD + f"[ERR] Request error occurred: {req_err}" + color.END)
+    except ValueError as json_err:
+        print(color.RED + color.BOLD + f"[ERR] JSON decoding error occurred: {json_err}" + color.END)
+    return None  # Return None if there was an error
+
 def suspend(id):
     payload = {
             "auth":auth,
             "id":id
             }
-    r = requests.post(f"{dm_url}/containers/suspend", json=payload)
-    return Container(r.json())
+    try:
+        r = requests.post(f"{dm_url}/containers/suspend", json=payload)
+        r.raise_for_status()  # Raise HTTPError for bad responses
+        return Container(r.json())
+    except requests.exceptions.HTTPError as http_err:
+        print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
+    except requests.exceptions.RequestException as req_err:
+        print(color.RED + color.BOLD + f"[ERR] Request error occurred: {req_err}" + color.END)
+    except ValueError as json_err:
+        print(color.RED + color.BOLD + f"[ERR] JSON decoding error occurred: {json_err}" + color.END)
+    return None  # Return None if there was an error
+
 def resume(id):
     payload = {
             "auth":auth,
             "id":id
             }
-    r = requests.post(f"{dm_url}/containers/resume", json=payload)
-    return Container(r.json)
-
-
-
-
-
-
-
+    try:
+        r = requests.post(f"{dm_url}/containers/resume", json=payload)
+        r.raise_for_status()  # Raise HTTPError for bad responses
+        return Container(r.json())
+    except requests.exceptions.HTTPError as http_err:
+        print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
+    except requests.exceptions.RequestException as req_err:
+        print(color.RED + color.BOLD + f"[ERR] Request error occurred: {req_err}" + color.END)
+    except ValueError as json_err:
+        print(color.RED + color.BOLD + f"[ERR] JSON decoding error occurred: {json_err}" + color.END)
+    return None  # Return None if there was an error
