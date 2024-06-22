@@ -57,9 +57,10 @@ with open("config.json") as c:
     else:
         print(color.RED + color.BOLD + "[ERR] Authorization check failed (check auth in the config.json)" + color.END)
         sys.exit(401)
-def create():
+def create(url):
     payload = {
-            "auth":auth
+            "auth":auth,
+            "url":url
             }
     r = requests.post(f"{dm_url}/containers/create", json=payload)
     return Container(r.json())

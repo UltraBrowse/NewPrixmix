@@ -8,8 +8,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return send_from_directory("frontend", "home.html")
-
+    return render_template("home.html")
+@app.route("/iframe.js")
+def iframe():
+    return render_template("iframe.js")
 @app.route("/api/", methods=['GET'])
 async def explorer():
     return send_from_directory("api", "explorer.html")
@@ -17,7 +19,8 @@ async def explorer():
 @app.route("/api/provision", methods=['POST', 'GET'])
 async def provision():
     if request.method == "POST":
-        container = dm_wrapper.create()
+        data = request.get_json(force=True)
+        container = dm_wrapper.create(data.get('url'))
         payload = {
             "id":container.id,
             "novnc_port":container.novnc_port,
@@ -32,7 +35,7 @@ async def provision():
 @app.route("/api/stop", methods=['POST', 'GET'])
 async def stop():
     if request.method == "POST":
-        id = await request.json().get('id')
+        id = request.get_json(force=True).get('id')
         if not id:
             return Reponse('{"status":"Container Not Found"}', status=500)
         dm_wrapper.destroy(id)
@@ -45,7 +48,7 @@ async def stop():
 @app.route("/api/suspend", methods=['POST', 'GET'])
 async def suspend():
     if request.method == "POST":
-        id = await request.json().get('id')
+        id = request.get_json(force=True).get('id')
         if not id:
             return Reponse('{"status":"Container Not Found"}', status=500)
         dm_wrapper.suspend(id)
@@ -58,7 +61,7 @@ async def suspend():
 @app.route("/api/resume", methods=['POST', 'GET'])
 async def resume():
     if request.method == "POST":
-        id = await request.json().get('id')
+        id = request.get_json(force=True).get('id')
         if not id:
             return Reponse('{"status":"Container Not Found"}', status=500)
         dm_wrapper.resume(id)
