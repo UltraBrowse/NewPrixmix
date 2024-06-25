@@ -1,7 +1,8 @@
 // Code courtesy of Caen Jones
 
+const prixmix_gateway = "YOUR-NGINX-GATEWAY-URL-HERE:8000"
 function submitForm() {
-    const input = document.getElementById('urlInput').value;
+    const input = document.getElementById('search').value;
     const { isValidUrl, processedUrl } = validateInput(input);
 
     if (!isValidUrl) return;
@@ -36,5 +37,5 @@ async function handleResponse(data) {
     // const novncPort = data.novnc_port; // not needed right now
     // document.querySelector('.loading-animation').style.display = 'none';
     await new Promise(r => setTimeout(r, 3000));
-    document.getElementById('input-div').innerHTML = `<iframe src="http://127.0.0.1:8000/port/${data.novnc_port}/vnc.html"></iframe>`;
+    document.getElementById('.content').innerHTML = `<iframe src="${prixmix_gateway}/port/${data.novnc_port}/vnc.html"></iframe>`;
 }
