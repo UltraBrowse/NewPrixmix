@@ -2,16 +2,22 @@ from flask import Flask, render_template, Response, request, redirect, url_for, 
 import threading
 import requests
 import json
-import dm_wrapper
+#import dm_wrapper
 
 app = Flask(__name__)
 
 @app.route("/")
-def home():
-    return render_template("home.html")
+async def home():
+    return send_from_directory("frontend", "home.html")
 @app.route("/iframe.js")
-def iframe():
-    return render_template("iframe.js")
+async def iframe():
+    return send_from_directory("frontend", "iframe.js")
+@app.route("/donate.html")
+async def donate():
+    return send_from_directory("frontend", "donate.html")
+@app.route("/about.html")
+async def about():
+    return send_from_directory("frontend", "about.html")
 @app.route("/api/", methods=['GET'])
 async def explorer():
     return send_from_directory("api", "explorer.html")
