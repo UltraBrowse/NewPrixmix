@@ -4,7 +4,7 @@ NewPrixmix is made in an effort to stop using Kasm Workspaces and their closed-s
 ## Progress
 Total: 50% Done\
 Backend: ~90% Done (Some more touchups needed)\
-Frontend: 0% Done, nobody has started \
+Frontend: 50% Done, we are cooking \
 NewPrixmixManager: 100% Done, nothing here needs work
 
 
