@@ -2,22 +2,27 @@ from flask import Flask, render_template, Response, request, redirect, url_for, 
 import threading
 import requests
 import json
-#import dm_wrapper
+import dm_wrapper
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='frontend')
+app.secret_key = 'secr3t'
+
+def generate_user_id():
+    import uuid
+    return str(uuid.uuid4())
 
 @app.route("/")
 async def home():
-    return send_from_directory("frontend", "home.html")
+    return render_template("home.html")
 @app.route("/iframe.js")
 async def iframe():
-    return send_from_directory("frontend", "iframe.js")
+    return render_template("iframe.js")
 @app.route("/donate.html")
 async def donate():
-    return send_from_directory("frontend", "donate.html")
+    return render_template("donate.html")
 @app.route("/about.html")
 async def about():
-    return send_from_directory("frontend", "about.html")
+    return render_template("about.html")
 @app.route("/api/", methods=['GET'])
 async def explorer():
     return send_from_directory("api", "explorer.html")
@@ -34,7 +39,6 @@ def provision():
         payload = {
             "id": container.id,
             "novnc_port": container.novnc_port,
-            "zrok_url": container.zrok_url
         }
         return jsonify(payload)
 
@@ -48,6 +52,7 @@ def provision():
 @app.route("/api/stop", methods=['POST', 'GET'])
 async def stop():
     if request.method == "POST":
+        session.clear()
         id = request.get_json(force=True).get('id')
         if not id:
             return Reponse('{"status":"Container Not Found"}', status=500)
@@ -73,6 +78,9 @@ async def suspend():
 
 @app.route("/api/resume", methods=['POST', 'GET'])
 async def resume():
+    if 'user_id' not in session:
+        session['user_id'] = generate_user_id()
+        session['data'] = {}
     if request.method == "POST":
         id = request.get_json(force=True).get('id')
         if not id:

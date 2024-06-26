@@ -26,7 +26,7 @@ NewPrixmix runs on port 8000. You may change that in the main.py.\
 ## Skid area
 - This **cannot** be deployed to a service like Github pages or Vercel.
 - You will need to selfhost NewPrixmixManager no matter what.
-- Using `flask run` will not work. Use `python3 server/main.py`.
+- ~~Using `flask run` will not work. Use `python3 server/main.py`.~~Use `flask run` to run it because I had to change it to app.py
 ## License Notice
 NewPrixmix and NewPrixmixManager are licensed under the GNU General Public License v3. By forking, modifying, or using this source code, you agree to comply with the terms of this license.
 
