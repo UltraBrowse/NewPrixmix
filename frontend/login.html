@@ -6,8 +6,8 @@
   <title>Home | Schoology</title>
   <link rel="shortcut website icon" href="https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script async src=" https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js "></script>
   <style>
-
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -46,7 +46,7 @@
       flex-grow: 1;
       text-align: center;
       margin-right: 60px;
-}
+    }
 
     header .buttons {
       display: flex;
@@ -86,7 +86,8 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-     .motto {
+
+    .motto {
       font-size: 3rem;
       text-align: center;
       margin-top: -75px;
@@ -95,26 +96,52 @@
       z-index: 1;
     }
 
-    .search-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding-left: 5%;
-      padding-right: 5%;
-      padding-bottom: 50px;
-      font-size: 1.2rem;
+    .login-box {
+      background: rgba(128, 128, 128, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(6, 173, 188, 0.5);
+      text-align: center;
       z-index: 1;
     }
-    .widgets {
-        margin-top: 20px;
-        z-index: 1;
-    }
-    form {
-        z-index: 1;
+
+    .login-box h1 {
+        font-size: 2.5rem;
     }
 
+    .login-box input {
+      width: 80%;
+      background-color: #333;
+      padding: 10px;
+      margin: 20px 0;
+      border: none;
+      border-radius: 5px;
+      color: #06adbc;
+      border: 2px solid #06adbc
+
+    }
+
+    .login-box button {
+      padding: 10px 20px;
+      background: #000;
+      border: 2px solid #06adbc;
+      color: #06adbc;
+      background: #333;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 85%;
+      box-shadow: 0 0 15px rgba(6, 173, 188, 0.5);
+      transition: background 0.3s ease;
+    }
+
+    .login-box button:hover {
+      background: #06adbc;
+      color: #000;
+      transition: all 0.3s ease;
+
+    }
     header .buttons a.premium-login {
       border: 2px solid #ffd700;
       text-decoration: none;
@@ -133,24 +160,51 @@
     <a href="/"><img src="https://us-east-1.tixte.net/uploads/i.kasd.nl/logo.png" alt="UltraBrowse Logo"></a>
     <h1>UltraBrowse</h1>
     <div class="buttons">
-      <a href="/about">About Us</a>
-      <a href="/donate">Donate</a>
-      <a class="premium-login" href="/login">Premium Login</a>
+        <a href="/about">About Us</a>
+        <a href="/donate">Donate</a>
+        <a class="premium-login" href="/login">Premium Login</a>
     </div>
   </header>
   <div class="ambient-background"></div>
-  <div class="motto">Donate</div>
-  <div class="search-container">
-    <p><strong>UltraBrowse appreciates donations. Donations help keep us running, and help us keep paying for hosting. Please consider Donating! Press the button below to donate via PayPal.</strong>
+  <div class="login-box">
+    <h1>Premium Login</h1>
+    <pre id="message"></pre>
+    <form id="form">
+      <input type="text" placeholder="Username" id="username" name="username" required>
+      <input type="password" placeholder="Password" id="password" name="password" required>
+      <button>Login</button>
+    </form>
   </div>
-  <form action="https://www.paypal.com/donate" method="post" target="_top">
-    <input type="hidden" name="business" value="GMZ8MHSN7Y5ZS" />
-    <input type="hidden" name="no_recurring" value="0" />
-    <input type="hidden" name="item_name" value="Hosting is very expensive, and Donations are one of few things that keep us running." />
-    <input type="hidden" name="currency_code" value="USD" />
-    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-  </form>
+    <script>
+        document.getElementById('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting and reloading the page
 
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, password: password })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Not Found');
+                }
+            })
+            .then(data => {
+                // Handle successful response here
+                document.getElementById('message').textContent = 'Login Successful'
+                location.href = "/"
+            })
+            .catch(error => {
+                // Handle error here
+                document.getElementById('message').textContent = 'Account Not Found.';
+                console.log(error)
+            });
+        });
+    </script>
 </body>
 </html>

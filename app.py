@@ -1,11 +1,33 @@
-from flask import Flask, render_template, Response, request, redirect, url_for, session, send_from_directory, jsonify
+from flask import Flask, render_template, Response, request, redirect, url_for, session, send_from_directory, jsonify, flash
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash
+from flask_login import login_required
 import threading
 import requests
 import json
 import dm_wrapper
+import hashlib
 
 app = Flask(__name__, template_folder='frontend')
 app.secret_key = 'secr3t'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(120), nullable=False)
+    premium = db.Column(db.Integer, nullable=True)
+def init_db():
+    with app.app_context():
+        db.create_all()
+        if not User.query.filter_by(username="kas").first():
+            hashed_password = hashlib.blake2b("changethis123".encode()).hexdigest()
+            new_user = User(username="kas", password=hashed_password, premium=3)
+            db.session.add(new_user)
+            db.session.commit()
 
 def generate_user_id():
     import uuid
@@ -13,20 +35,61 @@ def generate_user_id():
 
 @app.route("/")
 async def home():
+    if 'username' in session:
+        return render_template("home.html", loggedin=True)
     return render_template("home.html")
 @app.route("/iframe.js")
 async def iframe():
     return render_template("iframe.js")
-@app.route("/donate.html")
+@app.route("/donate")
 async def donate():
     return render_template("donate.html")
-@app.route("/about.html")
+@app.route("/about")
 async def about():
     return render_template("about.html")
+@app.route("/plans")
+async def plans():
+    if session['premium']:
+        return render_template("plans.html", premium=int(session['premium']))
+    return render_template("plans.html")
 @app.route("/api/", methods=['GET'])
 async def explorer():
     return send_from_directory("api", "explorer.html")
-
+@app.route("/login", methods=['POST', 'GET'])
+async def login():
+    if request.method == "POST":
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        hashed_password = hashlib.blake2b(password.encode()).hexdigest()
+        user = User.query.filter_by(username=username, password=hashed_password).first()
+        if user:
+            session['username'] = username
+            session['premium'] = user.premium
+            print(session['premium'])
+            return "success"
+        else:
+            return Response("Account not found", status=404)
+    return render_template("login.html")
+@app.route("/chpasswd", methods=['GET', 'POST'])
+@login_required
+async def chpasswd():
+    if request.method == "POST":
+        newpassword = request.form['password']
+        hashed_password = hashlib.blake2b(newpassword.encode()).hexdigest()
+        user = User.query.filter_by(username=session['username']).first()
+        if user:
+            user.password = hashed_password
+            db.session.commit()
+            flash("Password updated successfully")
+            return Response(jsonify({"status":"success"}), status=200)
+        flash("User not found")
+        return render_template("chpasswd.html")
+    return render_template("chpasswd.html")
+@app.route("/logout")
+async def logout():
+    session.pop('username', None)
+    return redirect(url_for("home"))
 @app.route("/api/provision", methods=['POST', 'GET'])
 def provision():
     if request.method == "POST":
@@ -94,5 +157,6 @@ async def resume():
 
 
 if __name__ == "__main__":
+    init_db()
     app.run(port=9000, debug=True)
 

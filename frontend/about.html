@@ -74,7 +74,7 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      background: linear-gradient(75deg, #000, #00008B, #333);
+      background: linear-gradient(75deg, #000, #160020, #000435, #000);
       background-size: 600% 600%;
       animation: Gradient 20s ease infinite;
       filter: blur(2000000000px);
@@ -110,8 +110,17 @@
         margin-top: 20px;
         z-index: 1;
     }
+    header .buttons a.premium-login {
+      border: 2px solid #ffd700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      color: #ffd700;
+    }
 
-
+    header .buttons a.premium-login:hover {
+      background: #ffd700;
+      color: #000;
+    }
   </style>
 </head>
 <body>
@@ -119,9 +128,9 @@
     <a href="/"><img src="https://us-east-1.tixte.net/uploads/i.kasd.nl/logo.png" alt="UltraBrowse Logo"></a>
     <h1>UltraBrowse</h1>
     <div class="buttons">
-      <a href="https://github.com/UltraBrowse" target="_blank">GitHub</a>
-      <a href="/about.html">About Us</a>
-      <a href="/donate.html">Donate</a>
+      <a href="/about">About Us</a>
+      <a href="/donate">Donate</a>
+      <a class="premium-login" href="/login">Premium Login</a>
     </div>
   </header>
   <div class="ambient-background"></div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UltraBrowse</title>
+  <title>Home | Schoology</title>
   <link rel="shortcut icon" href="https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script src="iframe.js"></script>
@@ -68,24 +68,35 @@
       background: #06adbc;
       color: #000;
     }
+    header .buttons a.premium-login {
+      border: 2px solid #ffd700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      color: #ffd700;
+    }
+
+    header .buttons a.premium-login:hover {
+      background: #ffd700;
+      color: #000;
+    }
 
     .content {
       width: 100%;
-      height: calc(100vh - 80px); /* Adjusted for header height */
+      height: 1000px; /* Adjusted for header height */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-      margin-top: 80px; /* Adjusted for header height */
+      top: 15px; /* Adjusted for header height */
     }
 
     .ambient-background {
       position: absolute;
       width: 100%;
       height: 100%;
-      background: linear-gradient(75deg, #000, #00008B, #333);
+      background: linear-gradient(75deg, #000, #160020, #000435, #000);
       background-size: 600% 600%;
       animation: Gradient 20s ease infinite;
       filter: blur(8px);
@@ -149,26 +160,27 @@
 
     iframe {
       width: 100%;
-      height: 100%;
+      height: calc(100vh - 70px); /* Adjust the height to account for the header */
       border: none;
       position: absolute;
-      top: 0;
+      top: 70px; /* Offset from the top to make space for the header */
       left: 0;
       z-index: 1;
     }
 
     .end-session-button {
-      position: fixed;
-      right: -100px;  /* Initially hidden off-screen */
-      bottom: 20px;   /* Position at the bottom right */
-      padding: 10px 20px;
-      background-color: #000;
-      color: #ff0000;
-      border: 2px solid #ff0000;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: right 0.5s, all 0.3s ease;
-      z-index: 2;
+        position: fixed;
+        right: -200px;  /* Initially hidden off-screen */
+        bottom: 20px;   /* Position at the bottom right */
+        padding: 10px 20px;
+        background-color: #000;
+        color: #ff0000;
+        border: 2px solid #ff0000;
+        border-radius: 5px;
+        cursor: pointer;
+        gap: 20px;
+        transition: right 0.5s, all 0.3s ease;
+        z-index: 2;
     }
 
     .end-session-button:hover {
@@ -199,9 +211,14 @@
       font-weight: bold;
     }
 
+    .session-panel .button-container {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      padding-left: 20px; /* Add padding-left to create space on the left of the buttons */
+    }
+
     .session-panel button {
-      display: block;
-      margin: 20px auto;
       padding: 10px 20px;
       color: #06adbc;
       border: 2px solid #06adbc;
@@ -210,67 +227,24 @@
       text-decoration: none;
       cursor: pointer;
       transition: all 0.3s ease;
+      padding-left: 20px; /* Adjust padding-left to create space on the left */
     }
 
     .session-panel button:hover {
       background-color: #069bac;
       color: #000;
     }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 3;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-content {
+    .session-panel .end-session-button-2 {
       background-color: #333;
-      padding: 20px;
-      border: 1px solid #06adbc;
-      border-radius: 10px;
-      color: #06adbc;
-      width: 50%;
-      margin: auto;
-    }
-
-    .modal-content h2 {
-      text-align: center;
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-
-    .modal-content p {
-      font-size: 1rem;
-      margin-bottom: 20px;
-      text-align: justify;
-    }
-
-    .modal-content .accept-button {
-      display: block;
-      margin: 0 auto;
-      padding: 10px 20px;
-      color: #06adbc;
-      border: 2px solid #06adbc;
+      color: #ff0000;
+      border: 2px solid #ff0000;
       border-radius: 5px;
-      background-color: #333;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
     }
-
-    .modal-content .accept-button:hover {
-      background-color: #069bac;
+    .session-panel .end-session-button-2:hover {
+      background: #ff0000;
       color: #000;
     }
+
   </style>
 </head>
 <body>
@@ -278,10 +252,13 @@
     <a href="/"><img src="https://us-east-1.tixte.net/uploads/i.kasd.nl/logo.png" alt="UltraBrowse Logo"></a>
     <h1>UltraBrowse</h1>
     <div class="buttons">
-      <a href="javascript:launchab()">Open in about:blank</a>
-      <a href="https://github.com/UltraBrowse" target="_blank">GitHub</a>
-      <a href="/about.html">About Us</a>
-      <a href="/donate.html">Donate</a>
+      <a href="/about">About Us</a>
+      <a href="/donate">Donate</a>
+      {% if loggedin %}
+        <a href="/logout" class="premium-login">Logout</a>
+      {% else %}
+        <a href="/login" class="premium-login">Premium Login</a>
+      {% endif %}
     </div>
   </header>
   <div class="content">
@@ -292,6 +269,25 @@
       <button onclick="submitForm()">&#10132;</button>
     </div>
   </div>
-  <div id="sessionPanel" class="session-panel">
+  <div id= "sessionPanel" class="session-panel">
     <p>Go back to current session</p>
-    <button onclick="reopenSess()"><strong>Go</strong></button>
+    <div class="button-container">
+      <button onclick="reopenSess()"><strong>Go</strong></button>
+      <button onclick="endSess()" class="end-session-button-2"><strong>End Session</strong></button>
+    </div>
+  </div>
+    <script>
+    function openSessionPanel() {
+      document.getElementById('sessionPanel').style.left = '0';
+    }
+    function closeSessionPanel() {
+      document.getElementById('sessionPanel').style.left = '-250px';
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      if (localStorage.getItem('active') === "1") {
+          setTimeout(openSessionPanel, 1000);
+      }
+    });
+  </script>
+</body>
+</html>
