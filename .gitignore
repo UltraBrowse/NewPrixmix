@@ -2,3 +2,5 @@ __pycache__
 instance
 migrations
 node_modules
+frontend/assets/css/styles.css
+
