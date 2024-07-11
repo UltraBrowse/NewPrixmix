@@ -1,293 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home | Schoology</title>
-  <link rel="shortcut icon" href="https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="iframe.js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #000;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #06adbc;
-      height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Schoology</title>
+    <link rel="shortcut icon" href="https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <script src="iframe.js"></script>
+    <style>
+        body {
+            overflow: hidden;
+        }
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 20px;
-      background: #000;
-      box-shadow: 0 0 15px #06adbc;
-      position: fixed;
-      top: 0;
-      z-index: 2;
-    }
+        .iframe-container {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+        }
 
-    header img {
-      height: 50px;
-      margin-left: 20px;
-    }
+        .session-panel {
+            position: fixed;
+            left: -250px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 250px;
+            height: auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s;
+            z-index: 30;
+        }
 
-    header h1 {
-      font-size: 2rem;
-      margin: 0;
-      color: #06adbc;
-      flex-grow: 1;
-      text-align: center;
-      margin-right: 60px;
-    }
+        .session-panel.open {
+            left: 0;
+        }
 
-    header .buttons {
-      display: flex;
-      gap: 10px;
-      position: absolute;
-      right: 20px;
-      margin-right: 20px;
-    }
+        .end-session-button {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            z-index: 50;
+            display: none;
+        }
 
-    header .buttons a {
-      text-decoration: none;
-      color: #06adbc;
-      border: 2px solid #06adbc;
-      padding: 10px 20px;
-      border-radius: 5px;
-      transition: all 0.3s ease;
-    }
+        .end-session-button.show {
+            display: block;
+            transition: opacity 0.1s;
+            opacity: 0;
+        }
 
-    header .buttons a:hover {
-      background: #06adbc;
-      color: #000;
-    }
-    header .buttons a.premium-login {
-      border: 2px solid #ffd700;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      color: #ffd700;
-    }
-
-    header .buttons a.premium-login:hover {
-      background: #ffd700;
-      color: #000;
-    }
-
-    .content {
-      width: 100%;
-      height: 1000px; /* Adjusted for header height */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      top: 15px; /* Adjusted for header height */
-    }
-
-    .ambient-background {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(75deg, #000, #160020, #000435, #000);
-      background-size: 600% 600%;
-      animation: Gradient 20s ease infinite;
-      filter: blur(8px);
-      z-index: 0;
-    }
-
-    @keyframes Gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .motto {
-      font-size: 3rem;
-      text-align: center;
-      margin-top: -75px;
-      margin-bottom: 75px;
-      font-weight: bold;
-      z-index: 1;
-    }
-
-    .search-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      z-index: 1;
-    }
-
-    .search-container input {
-      width: 600px;
-      padding: 15px;
-      border: none;
-      border-radius: 25px;
-      font-size: 1rem;
-      outline: none;
-      background: #333;
-      color: #06adbc;
-      border: 2px solid #06adbc;
-    }
-
-    .search-container button {
-      width: 50px;
-      height: 50px;
-      background: #06adbc;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-    }
-
-    .search-container button:hover {
-      background: #069bac;
-    }
-
-    iframe {
-      width: 100%;
-      height: calc(100vh - 70px); /* Adjust the height to account for the header */
-      border: none;
-      position: absolute;
-      top: 70px; /* Offset from the top to make space for the header */
-      left: 0;
-      z-index: 1;
-    }
-
-    .end-session-button {
-        position: fixed;
-        right: -200px;  /* Initially hidden off-screen */
-        bottom: 20px;   /* Position at the bottom right */
-        padding: 10px 20px;
-        background-color: #000;
-        color: #ff0000;
-        border: 2px solid #ff0000;
-        border-radius: 5px;
-        cursor: pointer;
-        gap: 20px;
-        transition: right 0.5s, all 0.3s ease;
-        z-index: 2;
-    }
-
-    .end-session-button:hover {
-        background: #ff0000;
-        color: #000;
-    }
-
-    /* Slide-out panel */
-    .session-panel {
-      position: fixed;
-      top: 0;
-      left: -250px;  /* Off-screen initially */
-      width: 250px;   /* Adjust width as needed */
-      height: 180px;
-      margin-top: 120px;
-      background-color: #333;
-      overflow-x: hidden;
-      padding-top: 0px;
-      transition: 0.5s;
-      z-index: 1;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-      color: #06adbc;
-    }
-
-    .session-panel p {
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .session-panel .button-container {
-      display: flex;
-      justify-content: flex-start;
-      gap: 10px;
-      padding-left: 20px; /* Add padding-left to create space on the left of the buttons */
-    }
-
-    .session-panel button {
-      padding: 10px 20px;
-      color: #06adbc;
-      border: 2px solid #06adbc;
-      border-radius: 5px;
-      background-color: #333;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      padding-left: 20px; /* Adjust padding-left to create space on the left */
-    }
-
-    .session-panel button:hover {
-      background-color: #069bac;
-      color: #000;
-    }
-    .session-panel .end-session-button-2 {
-      background-color: #333;
-      color: #ff0000;
-      border: 2px solid #ff0000;
-      border-radius: 5px;
-    }
-    .session-panel .end-session-button-2:hover {
-      background: #ff0000;
-      color: #000;
-    }
-
-  </style>
+        .end-session-button.show.fade-in {
+            opacity: 1;
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <a href="/"><img src="https://us-east-1.tixte.net/uploads/i.kasd.nl/logo.png" alt="UltraBrowse Logo"></a>
-    <h1>UltraBrowse</h1>
-    <div class="buttons">
-      <a href="/about">About Us</a>
-      <a href="/donate">Donate</a>
-      {% if loggedin %}
-        <a href="/logout" class="premium-login">Logout</a>
-      {% else %}
-        <a href="/login" class="premium-login">Premium Login</a>
-      {% endif %}
+
+<body class="bg-background">
+    <div class="bg-overlay2"></div>
+    <div class="bg-overlay"></div>
+     <dialog id="bookmarkMaker" class="modal">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold">Create a Bookmark</h3>
+        <p class="py-4">
+          <label class="ml-2">Bookmark URL:</label><br>
+          <input type="text" class="ml-2 mb-2 input input-bordered duration-200 hover:input-primary input-sm bmBuilderUrl" placeholder="https://example.com" onkeyup="bmBuilderUpd()"><br>
+          <label class="ml-2">Bookmark Title:</label><br>
+          <input type="text" class="ml-2 mb-2 input input-bordered duration-200 hover:input-primary input-sm bmBuilderTitle" placeholder="Example" onkeyup="bmBuilderUpd()" >
+          <br>
+          <b>Preview:</b><br>
+          <a href="#" class="btn ring-1 ring-secondary/30 hover:ring-2 hover:ring-success/60 text-[16px] w-fit rounded-full btn-sm flex flex-row items-center align-middle bmBuilderTemplate">
+            <img class="rounded-full h-6 w-6" src="img/64.jpg" alt="Icon"> <span class="max-w-[160px] overflow-ellipsis whitespace-nowrap overflow-hidden">Template</span>
+          </a>
+          <br>
+        </p>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn btn-success text-success-content bmMakerAdd">Add</button>
+            <button class="btn btn-error text-error-content bmMakerCancel">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <nav class="navbar z-50">
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl align-middle text-[#06adbc]" href="/">UltraBrowse</a>
+        </div>
+        <div class="flex-none">
+            <a class="btn btn-outline mx-1 bg-base-100" href="/about">About Us</a>
+            <a class="btn btn-outline mx-1 bg-base-100" href="/donate">Donate</a>
+            {% if loggedin %}
+            <a href="/logout" class="btn btn-outline btn-primary mx-1">Logout</a>
+            {% else %}
+            <a href="/login" class="btn btn-outline btn-primary mx-1">Premium Login</a>
+            {% endif %}
+            <ul class="menu menu-horizontal px-1 flex align-middle items-center gap-3">
+                <li>
+                    <button class="inlineBookmarkBtn hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                    </button>
+                </li>
+          </ul>
+        </div>
+    </nav>
+    <div class="content contain h-screen w-full flex justify-center align-middle items-center flex-col flex-1">
+        <div class="flex space-x-2 iframe-container"></div>
+        <div class="flex space-x-2 p-4 bg-base-100 rounded shadow-lg z-10 w-full max-w-2xl">
+            <input type="text" id="search" placeholder="Search with Google or enter address"
+                class="input input-bordered w-full text-xl">
+            <button onclick="submitForm()" class="btn btn-primary text-xl"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+                    <path fill-rule="evenodd"
+                        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+         <div class="bmCard ">
+              <b class="text-info">Bookmarks:</b>
+              <div class="bmSection flex flex-row min-w-[240px] max-w-[460px] max-h-[224px] overflow-auto p-2 flex-wrap gap-3">
+                <button class="btn bookmark-btn add " onclick="bookmarkBtn()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  <span>Add</span>
+                </button>
+                <a href="#" class="btn bookmark-btn template">
+                  <img class="rounded-full h-6 w-6" src="img/64.jpg" alt="Icon"> <span class="max-w-[160px] overflow-ellipsis whitespace-nowrap overflow-hidden">Template</span>
+                </a>
+              </div>
+            </div>
+
     </div>
-  </header>
-  <div class="content">
-    <div class="ambient-background"></div>
-    <div class="motto">Browse with freedom, explore without limits.</div>
-    <div class="search-container">
-      <input type="text" id="search" placeholder="Search with Google or enter address">
-      <button onclick="submitForm()">&#10132;</button>
+
+
+    <div id="sessionPanel" class="session-panel">
+        <p>Go back to current session</p>
+        <div class="button-container">
+            <button onclick="reopenSess()" class="btn btn-primary btn-outline"><strong>Go</strong></button>
+            <button onclick="endSess()" class="btn btn-error btn-outline"><strong>End Session</strong></button>
+        </div>
     </div>
-  </div>
-  <div id= "sessionPanel" class="session-panel">
-    <p>Go back to current session</p>
-    <div class="button-container">
-      <button onclick="reopenSess()"><strong>Go</strong></button>
-      <button onclick="endSess()" class="end-session-button-2"><strong>End Session</strong></button>
-    </div>
-  </div>
+
+    <button id="endSessionButton" class="btn btn-error btn-outline end-session-button">End Session</button>
+
     <script>
-    function openSessionPanel() {
-      document.getElementById('sessionPanel').style.left = '0';
-    }
-    function closeSessionPanel() {
-      document.getElementById('sessionPanel').style.left = '-250px';
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      if (localStorage.getItem('active') === "1") {
-          setTimeout(openSessionPanel, 1000);
-      }
-    });
-  </script>
+        function openSessionPanel() {
+            document.getElementById('sessionPanel').style.left = '0';
+        }
+        function closeSessionPanel() {
+            document.getElementById('sessionPanel').style.left = '-250px';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            if (localStorage.getItem('active') === "1") {
+                setTimeout(openSessionPanel, 1000);
+            }
+        });
+    </script>
 </body>
-</html>
+

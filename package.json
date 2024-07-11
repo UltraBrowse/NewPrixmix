@@ -1,0 +1,23 @@
+{
+  "name": "NewPrixmix",
+  "version": "1.0.0",
+  "description": "NewPrixmix is made in an effort to stop using Kasm Workspaces and their closed-source Web UI and API. [NewPrixmixManager](https://github.com/ka-studios/NewPrixmixManager) creates, destroys, and suspends docker containers asynchronously while streaming them to the end user via [noVNC](https://github.com/noVNC/noVNC) ## Progress Total: 50% Done\\ Backend: ~90% Done (Some more touchups needed)\\ Frontend: 50% Done, we are cooking \\ NewPrixmixManager: 100% Done, nothing here needs work",
+  "scripts": {
+    "build:css": "npx tailwindcss build -i ./input.css -o frontend/assets/css/styles.css",
+    "watch:css": "watch 'npm run build:css' ./",
+    "start": "python3 app.py",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "proxy",
+    "NewPrixmix",
+    "prixmix"
+  ],
+  "author": "UltraBrowse",
+  "license": "GPLv3",
+  "devDependencies": {
+    "daisyui": "^4.12.10",
+    "tailwindcss": "^3.4.4",
+    "watch": "^1.0.2"
+  }
+}

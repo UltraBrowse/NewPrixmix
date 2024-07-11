@@ -34,7 +34,9 @@ class Container:
     @property
     def status(self):
         return self._json.get('status')
-
+    @property
+    def error(self):
+        return self._json.get('error')
 config = Path("config.json")
 if not config.is_file():
     print(color.RED + color.BOLD + "[ERR] Please create a config.json file with the URL of your NewPrixmixManager instance." + color.END)
@@ -66,7 +68,7 @@ def create(url):
             }
     try:
         r = requests.post(f"{dm_url}/containers/create", json=payload)
-        r.raise_for_status()  # Raise HTTPError for bad responses
+        r.raise_for_status()  # Raise HTTPError for bad response
         return Container(r.json())
     except requests.exceptions.HTTPError as http_err:
         print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
