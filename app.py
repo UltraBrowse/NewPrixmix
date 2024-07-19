@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import login_required
 import dm_wrapper
 import hashlib
+import uuid
 
 app = Flask(__name__, template_folder='frontend')
 app.secret_key = 'secr3t'
@@ -16,6 +17,7 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     premium = db.Column(db.Integer, nullable=True)
+    isAdmin = db.Column(db.Boolean, nullable=True)
 def init_db():
     with app.app_context():
         db.create_all()
@@ -26,13 +28,14 @@ def init_db():
             db.session.commit()
 
 def generate_user_id():
-    import uuid
     return str(uuid.uuid4())
 
 @app.route("/")
 async def home():
     if 'username' in session:
         return render_template("home.html", loggedin=True)
+    if 'user-id' not in session:
+        session['user-id'] = generate_user_id()
     return render_template("home.html")
 @app.route("/iframe.js")
 async def iframe():
@@ -57,7 +60,7 @@ async def homenew():
 @app.route("/api/", methods=['GET'])
 async def explorer():
     return send_from_directory("api", "explorer.html")
-@app.route("/login", methods=['POST', 'GET'])
+@app.route("/login", methods=['POST', 'GET'])       
 async def login():
     if request.method == "POST":
         data = request.get_json()
@@ -96,14 +99,15 @@ async def logout():
 def provision():
     if request.method == "POST":
         data = request.get_json(force=True)
-        container = dm_wrapper.create(data.get('url'))
-        if container.status == "fail":
-            return jsonify({"status":"fail", "error": container.error})
-        if container is None:
-            return jsonify({"error": "Failed to create container"})
-
+        if 'premium' in session:
+            if 'username' in session:
+                container = dm_wrapper.create(data.get('url'), session['premium'], session['username'])
+            else:
+                container = dm_wrapper.create(data.get('url'), session['premium'])
+        else:
+            container = dm_wrapper.create(data.get('url'))
         payload = {
-            "id": container.id,
+        "id": container.id,
             "novnc_port": container.novnc_port,
         }
         return jsonify(payload)
@@ -118,10 +122,10 @@ def provision():
 @app.route("/api/stop", methods=['POST', 'GET'])
 async def stop():
     if request.method == "POST":
-        session.clear()
         id = request.get_json(force=True).get('id')
         if not id:
-            return Response('{"status":"Container Not Found"}', status=500)
+            return Response('{"status":"Container Not Found"}', status=400)
+        session.pop("user-id")
         dm_wrapper.destroy(id)
         return Response('{"status":"success"}', status=200)
     elif request.method == "GET":
@@ -157,9 +161,11 @@ async def resume():
         return send_from_directory("api", "resume.html")
     else:
         return Response("Method Not Allowed", status=405)
-
+@app.route("/api/sessions", methods=['POST', 'GET'])
+async def sessions():
+    
 
 if __name__ == "__main__":
     init_db()
-    app.run(port=9000, debug=True)
+    app.run(host="0.0.0.0", port=9000, debug=True)
 

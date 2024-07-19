@@ -6,18 +6,7 @@ import requests
 from pathlib import Path
 import sys
 import json
-
-class color:
-   PURPLE = '\033[95m'
-   CYAN = '\033[96m'
-   DARKCYAN = '\033[36m'
-   BLUE = '\033[94m'
-   GREEN = '\033[92m'
-   YELLOW = '\033[93m'
-   RED = '\033[91m'
-   BOLD = '\033[1m'
-   UNDERLINE = '\033[4m'
-   END = '\033[0m'
+import logging
 
 class Container:
     def __init__(self, json):
@@ -29,9 +18,6 @@ class Container:
     def novnc_port(self):
         return self._json.get('novnc_port')
     @property
-    def zrok_url(self):
-        return self._json.get('zrok_url')
-    @property
     def status(self):
         return self._json.get('status')
     @property
@@ -39,7 +25,7 @@ class Container:
         return self._json.get('error')
 config = Path("config.json")
 if not config.is_file():
-    print(color.RED + color.BOLD + "[ERR] Please create a config.json file with the URL of your NewPrixmixManager instance." + color.END)
+    logging.error("Please create a config.json file with the URL of your NewPrixmixManager instance.")
     sys.exit(127)
 with open("config.json") as c:
     data = c.read()
@@ -48,35 +34,37 @@ with open("config.json") as c:
     try:
         r = requests.get(f"{dm_url}/_healthcheck")
     except requests.exceptions.ConnectionError:
-        print(color.RED + color.BOLD + f"[ERR] NewPrixmixManager instance at {dm_url} failed healthcheck (is it running?)" + color.END)
+        logging.error(f"NewPrixmixManager instance at {dm_url} failed healthcheck (is it running?)")
         sys.exit(141)
-    print(color.BOLD + f"[INFO] Using NewPrixmixManager instance at {dm_url}" + color.END)
+    logging.info(f"Using NewPrixmixManager instance at {dm_url}")
     payload = {
         "auth":auth
         }
     r = requests.post(f"{dm_url}/_authcheck", json=payload)
     if r.status_code == 200:
-        print(color.BOLD + "[INFO] Passed authorization token check" + color.END)
+       logging.info("Passed authorization token check")
     else:
-        print(color.RED + color.BOLD + "[ERR] Authorization check failed (check auth in the config.json)" + color.END)
+        logging.error("Authorization check failed (check auth in the config.json)" )
         sys.exit(401)
 
-def create(url):
+def create(url, prem = None, username = None):
     payload = {
             "auth":auth,
-            "url":url
+            "url":url,
+            "premium": prem,
+            "username": False if not username else username
             }
     try:
         r = requests.post(f"{dm_url}/containers/create", json=payload)
-        r.raise_for_status()  # Raise HTTPError for bad response
+        r.raise_for_status()
         return Container(r.json())
     except requests.exceptions.HTTPError as http_err:
-        print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
+        logging.error(f"HTTP error occurred: {http_err}")
     except requests.exceptions.RequestException as req_err:
-        print(color.RED + color.BOLD + f"[ERR] Request error occurred: {req_err}" + color.END)
+        logging.error(f"Request error occurred: {req_err}")
     except ValueError as json_err:
-        print(color.RED + color.BOLD + f"[ERR] JSON decoding error occurred: {json_err}" + color.END)
-    return None  # Return None if there was an error
+        logging.error(f"JSON decoding error occurred: {json_err}")
+    return None  
 
 def destroy(id):
     payload = {
@@ -85,15 +73,15 @@ def destroy(id):
             }
     try:
         r = requests.post(f"{dm_url}/containers/destroy", json=payload)
-        r.raise_for_status()  # Raise HTTPError for bad responses
+        r.raise_for_status() 
         return Container(r.json())
     except requests.exceptions.HTTPError as http_err:
-        print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
+        logging.error(f"HTTP error occurred: {http_err}")
     except requests.exceptions.RequestException as req_err:
-        print(color.RED + color.BOLD + f"[ERR] Request error occurred: {req_err}" + color.END)
+        logging.error(f"Request error occurred: {req_err}")
     except ValueError as json_err:
-        print(color.RED + color.BOLD + f"[ERR] JSON decoding error occurred: {json_err}" + color.END)
-    return None  # Return None if there was an error
+        logging.error(f"JSON decoding error occurred: {json_err}")
+    return None 
 
 def suspend(id):
     payload = {
@@ -102,15 +90,15 @@ def suspend(id):
             }
     try:
         r = requests.post(f"{dm_url}/containers/suspend", json=payload)
-        r.raise_for_status()  # Raise HTTPError for bad responses
+        r.raise_for_status() 
         return Container(r.json())
     except requests.exceptions.HTTPError as http_err:
-        print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
+        logging.error(f"HTTP error occurred: {http_err}")
     except requests.exceptions.RequestException as req_err:
-        print(color.RED + color.BOLD + f"[ERR] Request error occurred: {req_err}" + color.END)
+        logging.error(f"Request error occurred: {req_err}")
     except ValueError as json_err:
-        print(color.RED + color.BOLD + f"[ERR] JSON decoding error occurred: {json_err}" + color.END)
-    return None  # Return None if there was an error
+        logging.error(f"JSON decoding error occurred: {json_err}")
+    return None 
 
 def resume(id):
     payload = {
@@ -119,12 +107,15 @@ def resume(id):
             }
     try:
         r = requests.post(f"{dm_url}/containers/resume", json=payload)
-        r.raise_for_status()  # Raise HTTPError for bad responses
+        r.raise_for_status() 
         return Container(r.json())
     except requests.exceptions.HTTPError as http_err:
-        print(color.RED + color.BOLD + f"[ERR] HTTP error occurred: {http_err}" + color.END)
+        logging.error(f"HTTP error occurred: {http_err}")
     except requests.exceptions.RequestException as req_err:
-        print(color.RED + color.BOLD + f"[ERR] Request error occurred: {req_err}" + color.END)
+        logging.error(f"Request error occurred: {req_err}")
     except ValueError as json_err:
-        print(color.RED + color.BOLD + f"[ERR] JSON decoding error occurred: {json_err}" + color.END)
-    return None  # Return None if there was an error
+        logging.error(f"JSON decoding error occurred: {json_err}")
+    return None
+
+def getSessions(user):
+    payload =      

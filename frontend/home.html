@@ -112,18 +112,18 @@
         <div class="flex space-x-2 p-4 bg-base-100 rounded shadow-lg z-10 w-full max-w-2xl">
             <input type="text" id="search" placeholder="Search with Google or enter address"
                 class="input input-bordered w-full text-xl">
-            <button onclick="submitForm()" class="btn btn-primary text-xl"><svg xmlns="http://www.w3.org/2000/svg"
+            <button onclick="submitForm     ()" class="btn btn-primary text-xl"><svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
                     <path fill-rule="evenodd"
                         d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
                         clip-rule="evenodd"></path>
-                </svg>
+                </svg>  
             </button>
         </div>
          <div class="bmCard ">
               <b class="text-info">Bookmarks:</b>
               <div class="bmSection flex flex-row min-w-[240px] max-w-[460px] max-h-[224px] overflow-auto p-2 flex-wrap gap-3">
-                <button class="btn bookmark-btn add " onclick="bookmarkBtn()">
+                <button class="btn bookmark-btn add "   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                   <span>Add</span>
                 </button>
@@ -158,6 +158,14 @@
                 setTimeout(openSessionPanel, 1000);
             }
         });
+        {% if 'user-id' not in session %}
+            session['user-id'] = generate_user_id()
+        {% endif %}
+        if ("user-id" in localStorage) {
+            localStorage.setItem("user-id", "{{ session['user-id'] }}")
+        }
+
+
     </script>
 </body>
 

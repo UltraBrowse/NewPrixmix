@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.navbar {@apply bg-base-200/50 backdrop-blur fixed top-0 hover:backdrop-blur-md duration-300 hover:bg-base-200/70}
+ 
+@keyframes pan {
+    0% {
+        background-position: 0% 0%, 0% 0%;
+    }
+    100% {
+        background-position: 0% 0%, 100% 0%;
+    }
+}
+.bg-overlay {
+  background-image: url("/assets/pattern.svg");
+  background-size: 96px;
+  position: fixed;
+  left: 50%;
+  top: 0px;
+  translate: -50% 0%;
+  height: 100%;
+  width: 100%;
+  opacity: 0.06;
+  animation: pan 180s linear infinite;
+  will-change: background-position;
+  z-index:-32767;
+
+}
+.bg-overlay2 {
+  z-index:-1;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  position:fixed;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.25) 100%);
+}
+  @keyframes slideIn {
+  0% {opacity:0;transform:translateY(25px)}
+  100% {opacity:1;transform:translateY(0px)}
+}
+.initial_slideIn {
+  animation-delay: 0.2s;
+  animation: 0.75s slideIn forwards;
+  opacity:0;
+}
+
+.bookmark-btn {@apply ring-1 ring-secondary/30 hover:ring-2 hover:ring-success/60 text-[16px] w-fit rounded-full btn-sm flex flex-row items-center align-middle}
+.template {display:none;}
+.bmCard {@apply [animation-delay:1s] card flex-[0] card-body mt-16 bg-base-100 rounded-2xl hover:bg-base-200 hover:ring-2 hover:shadow-lg shadow-black/20 ring-secondary/70 fixed bottom-0 duration-300 opacity-75 hover:opacity-100 rounded-b-none }
+.bmCard .bmSection {max-height:48px !important; height:100%; transition: all 0.67s;}
+.bmCard:hover .bmSection {max-height:400px !important;height:100%;transition: all 0.67s;}
