@@ -23,7 +23,7 @@ def init_db():
         db.create_all()
         if not User.query.filter_by(username="kas").first():
             hashed_password = hashlib.blake2b("changethis123".encode()).hexdigest()
-            new_user = User(username="kas", password=hashed_password, premium=3)
+            new_user = User(username="kas", password=hashed_password, premium=3, isAdmin=1)
             db.session.add(new_user)
             db.session.commit()
 
@@ -163,7 +163,7 @@ async def resume():
         return Response("Method Not Allowed", status=405)
 @app.route("/api/sessions", methods=['POST', 'GET'])
 async def sessions():
-    
+    d
 
 if __name__ == "__main__":
     init_db()

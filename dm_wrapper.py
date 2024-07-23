@@ -118,4 +118,4 @@ def resume(id):
     return None
 
 def getSessions(user):
-    payload =      
+    payload = "a"     
