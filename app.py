@@ -36,7 +36,7 @@ async def home():
         return render_template("home.html", loggedin=True)
     if 'user-id' not in session:
         session['user-id'] = generate_user_id()
-    return render_template("home.html")
+    return render_template("home_old.html")
 @app.route("/iframe.js")
 async def iframe():
     return render_template("iframe.js")
@@ -161,9 +161,10 @@ async def resume():
         return send_from_directory("api", "resume.html")
     else:
         return Response("Method Not Allowed", status=405)
-@app.route("/api/sessions", methods=['POST', 'GET'])
-async def sessions():
-    d
+
+@app.route("/sessions")
+async def sessionpage():
+    return render_template("sessions.html")
 
 if __name__ == "__main__":
     init_db()

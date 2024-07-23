@@ -116,6 +116,32 @@ function bmBuilderUpd() {
 try {new URL(url)} catch {return}
     t.querySelector("img").src = `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://${new URL(url).host}&size=64`
 }
+function createBox(name, link, imageUrl) {
+    const box = document.createElement('div');
+    box.style.border = '1.75px solid #000';
+    box.style.padding = '10px';
+    box.classList.add("card")
+    box.style.margin = '10px';
+    box.style.textAlign = 'center';
+    box.style.cursor = 'pointer';
+    box.style.width = '200px';
+    box.style.color = "white"
+    box.style.marginBottom = "10px"
+    const nameElement = document.createElement('h2');
+    nameElement.innerText = name;
+    const imageElement = document.createElement('img');
+    imageElement.src = imageUrl;
+    imageElement.alt = name;
+    imageElement.style.width = '100%';
+    imageElement.style.height = 'auto';
+    box.appendChild(nameElement);
+    box.appendChild(imageElement);
+    box.addEventListener('click', () => {
+      window.location.href = link;
+    });
+    var games = document.getElementsByClassName("gamecontainer")
+    games[0].appendChild(box);
+}
 function submitForm() {
     const searchInput = document.getElementById('search');
     const input = searchInput.value;

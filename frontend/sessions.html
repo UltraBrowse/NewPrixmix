@@ -1,68 +1,29 @@
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-<title>Cheeseburger Games</title>
-</head>
-<body>
-  <h1 class="arimo-header">Welcome to Cheeseburger Games!</h1>
-  <iframe src="https://isaacfonner.github.io/Charminer/" width="0.001px" height="0.001px" style="z-index: -5;"></iframe> 
-<div class="gamecontainer"></div>
-<style>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Schoology</title>
+    <link rel="shortcut icon" href="https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/favicon.ico">
+    <script src="iframe.js"></script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
 
-.arimo-header {
-font-family: "Arimo", sans-serif;
-font-optical-sizing: auto;
-font-weight: 600  ;
-font-style: normal;
-font-size: 60px;
-text-align: center;
-color: white;
--webkit-text-stroke-width: 2px;
--webkit-text-stroke-color: black;  
-}
-body {
-  background-image: url(back.png);
-  backdrop-filter: blur(4px);
-  justify-self: flex-start;
+    </style>
+  </head>
 
-}
-.burger {
--webkit-text-stroke-color: black;
--webkit-text-stroke-width: 0.7px;
-}
-.gamecontainer{
-display: flex;
-}
-  </style>
-  <script>
-      function createBox(name, link, imageUrl) {
-        const box = document.createElement('div');
-        box.style.border = '1.75px solid #000';
-        box.style.padding = '10px';
-        box.classList.add("burger")
-        box.style.margin = '10px';
-        box.style.textAlign = 'center';
-        box.style.cursor = 'pointer';
-        box.style.width = '200px';
-        box.style.color = "white"
-        box.style.marginBottom = "10px"
-        const nameElement = document.createElement('h2');
-        nameElement.innerText = name;
-        const imageElement = document.createElement('img');
-        imageElement.src = imageUrl;
-        imageElement.alt = name;
-        imageElement.style.width = '100%';
-        imageElement.style.height = 'auto';
-        box.appendChild(nameElement);
-        box.appendChild(imageElement);
-        box.addEventListener('click', () => {
-          window.location.href = link;
-        });
-        var games = document.getElementsByClassName("gamecontainer")
-        games[0].appendChild(box);
-      }
-  </script>
-<script src="gamelist.js"></script> 
-
-</body>
+  <body class="bg-background">
+    <div class="card bg-base-100 w-96 shadow-xl">
+      <figure>
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+          alt="Shoes" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title">Shoes!</h2>
+        <p>If a dog chews shoes whose shoes does he choose?</p>
+        <div class="card-actions justify-end">
+          <button class="btn btn-primary">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </body>
