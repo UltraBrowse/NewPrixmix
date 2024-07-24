@@ -1,12 +1,8 @@
 # NewPrixmix
 
 NewPrixmix is made in an effort to stop using Kasm Workspaces and their closed-source Web UI and API. [NewPrixmixManager](https://github.com/ka-studios/NewPrixmixManager) creates, destroys, and suspends docker containers asynchronously while streaming them to the end user via [noVNC](https://github.com/noVNC/noVNC)
-## Progress
-Total: 50% Done\
-Backend: ~90% Done (Some more touchups needed)\
-Frontend: 50% Done, we are cooking \
-NewPrixmixManager: 100% Done, nothing here needs work
 
+**This version of NewPrixmix has been discontinued, and no support will be provided other than this README. You can view and contribute to the rewrite which is on GitLab and found [here](https://gitlab.com/ka_studios/Prixmix).**
 
 ## Quickstart
 
@@ -31,4 +27,3 @@ NewPrixmix runs on port 8000. You may change that in the main.py.\
 NewPrixmix and NewPrixmixManager are licensed under the GNU General Public License v3. By forking, modifying, or using this source code, you agree to comply with the terms of this license.
 
 ### Made with ❤️ by UltraBrowse (mostly KAS)
-
